@@ -5,6 +5,12 @@ const path = require('path');  // path 모듈 추가
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 
+/**
+ * GET product list.
+ *
+ * @return product list | empty.
+ */
+
 router.get('/', async (req, res) => {
     try {
       const browser = await puppeteer.launch();
