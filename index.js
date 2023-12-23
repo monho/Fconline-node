@@ -9,7 +9,7 @@ app.use(express.json({ extended: false }));
 
 
 app.use(cors());
-app.use("api/userrank",userrank);
+app.use("/api/userrank", userrank);
 
 app.use("/api/product", product);
 
