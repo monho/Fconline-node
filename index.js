@@ -17,7 +17,7 @@ app.use(cors());
 
 
 
-app.get('/', async (req, res) => {
+app.get('/userrank', async (req, res) => {
     try {
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
