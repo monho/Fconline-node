@@ -6,12 +6,7 @@ const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 const cors = require('cors'); // cors 모듈 추가
 // 정적 파일 서빙
-app.use( express.static( path.join(__dirname, 'client/build') ) );
 
-
-app.get('/',function(req,res){
-  res.sendFile(path.join(__dirname, '/client/build/index.html'));
-})
 
 app.use(cors());
 
