@@ -5,11 +5,6 @@ const path = require('path');  // path 모듈 추가
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 
-/**
- * GET product list.
- *
- * @return product list | empty.
- */
 
 router.get('/', async (req, res) => {
     try {
@@ -20,8 +15,7 @@ router.get('/', async (req, res) => {
       await page.goto('https://fconline.nexon.com/datacenter/rank');
   
       // 동적으로 데이터가 로드되기를 기다림 (예: 0.2초 동안 대기)
-      await page.waitForTimeout(200);
-  
+        
       // 동적으로 로드된 데이터 크롤링 (상위 5개의 tr 요소만 선택)
       const crawledData = await page.evaluate(() => {
         const data = [];
@@ -52,7 +46,7 @@ router.get('/', async (req, res) => {
       res.json({ crawledData });
     } catch (error) {
       console.error(error);
-      res.status(500).send('Internal Server Error');
+      res.status(500).send(error);
     }
   });
 
