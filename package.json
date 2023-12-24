@@ -7,8 +7,8 @@
     "node": "18.x"
   },
   "scripts": {
-    "start": "node index.js",
-    "vercel-build": "npm install --only=production && npm run build"
+    "start": "node index.js"
+    
   },
   "repository": {
     "type": "git",
