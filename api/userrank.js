@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     });
     const page = await browser.newPage();
   
-    // 페이지에 접속
+    // 페이지에 접
     await page.goto('https://fconline.nexon.com/datacenter/rank');
   
     // 동적으로 데이터가 로드되기를 기다림 (예: 0동안 대기)
