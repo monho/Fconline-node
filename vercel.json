@@ -1,5 +1,11 @@
-
 {
+    "version": 2,
     "builds": [{ "src": "vercel-build", "use": "@vercel/node" }],
-    "functions": { "api/*": { "runtime": "vercel-node.18" } }
-  }
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/"
+        }
+    ]
+    
+}
