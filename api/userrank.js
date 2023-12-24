@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
       // 페이지에 접속
       await page.goto('https://fconline.nexon.com/datacenter/rank');
   
-      // 동적으로 데이터가 로드되기를 기다림 (예: 0.2초 동안 대기)
+      // 동적으로 데이터가 로드되기를 기다림 (예: 0동안 대기)
         
       // 동적으로 로드된 데이터 크롤링 (상위 5개의 tr 요소만 선택)
       const crawledData = await page.evaluate(() => {
