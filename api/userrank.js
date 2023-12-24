@@ -1,14 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const puppeteer = require('puppeteer-core');
-const chromiumPath = require('chromium').path;
+const puppeteer = require('puppeteer');
 
 router.get('/', async (req, res) => {
   try {
-    const browser = await puppeteer.launch({
-      executablePath: chromiumPath,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    });
     const page = await browser.newPage();
   
     // 페이지에 접
