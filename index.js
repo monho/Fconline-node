@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const userinfo = require("./api/userinfo");
 
 const PORT = process.env.PORT || 8080;
-app.use(express.json({ extended: true }));
+app.use(express.json({ extended: false }));
 
 app.use(cors());
 app.use(bodyParser.json());
