@@ -1,48 +1,34 @@
-// userinfo.js
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const Baseinfo = require("./Baseinfo");
+
 router.use(cors());
 router.use(bodyParser.json());
 
-// Baseinfo.js
-const BaseApiUrl = {
-  baseURL: "https://open.api.nexon.com",
-};
-
-const headers = {
-  "x-nxopen-api-key":
-    "test_e9335a6787866a3cc9067b9336d410d9deda234d1ecd92a9b62e5b50be43978e09a938e49b96a3c2f6bbfda5e4ea66eb", // Replace with your actual API key
-};
-
 router.post("/getuserinfo", async (req, res) => {
   try {
-    console.log("요청 본문:", req.body);
-
     const { message: nickname, currentIndex = 0 } = req.body;
-    console.log("닉네임:", nickname);
-
     const { ouid } = await getOuid(nickname);
-    console.log("OUID:", ouid);
 
-    const { level, nickname: UserName } = await getuserinfo(ouid);
-    const maxdivisionInfo = await getuserDevisioninfo(ouid);
-    const matchids = await getuserMatctLog(ouid, currentIndex);
-    const matchDetail = await getuserMatchDetails(matchids);
+    const [userInfo, maxDivisionInfo, matchIds] = await Promise.all([
+      getuserinfo(ouid),
+      getuserDevisioninfo(ouid),
+      getuserMatctLog(ouid, currentIndex),
+    ]);
+    
+    const matchDetails = await Promise.all(matchIds.map(getuserMatchDetail));
 
-    console.log(maxdivisionInfo);
-    result = {
+    const result = {
       ouid,
-      level,
-      UserName,
-      ...maxdivisionInfo, // 스프레드 연산자
-      matchids,
+      level: userInfo.level,
+      UserName: userInfo.nickname,
+      ...maxDivisionInfo,
+      matchDetails,
     };
 
-    console.log(result);
     res.status(200).json(result);
   } catch (error) {
     console.error("에러:", error);
@@ -79,12 +65,9 @@ const getuserMatctLog = async (ouid, currentIndex) => {
   try {
     const response = await axios.get(
       Baseinfo.BaseApiUrl.baseURL +
-        "/fconline/v1/user/match?ouid=" +
-        ouid +
-        `&matchtype=50&offset=${currentIndex * 10}&limit=10`,
+        `/fconline/v1/user/match?ouid=${ouid}&matchtype=50&offset=${currentIndex}&limit=10`,
       { headers: Baseinfo.headers }
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     throw new Error(`getuserMatching ${error.message}`);
@@ -103,6 +86,7 @@ const getuserMatchDetails = async (matchids) => {
     throw new Error(`getuserMatchDetails ${error.message}`);
   }
 };
+
 const getuserMatchDetail = async (matchId) => {
   try {
     const response = await axios.get(
@@ -122,7 +106,7 @@ const getCurrentIndex = async (nickname) => {
     Baseinfo.BaseApiUrl.baseURL + "/fconline/v1/id?nickname=" + nickname,
     { headers: Baseinfo.headers }
   );
-  return response.data;
+  return response.data.find((data) => data.matchId === matchId);
 };
 
 module.exports = router;
