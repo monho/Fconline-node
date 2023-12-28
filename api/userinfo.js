@@ -18,7 +18,7 @@ router.post("/getuserinfo", async (req, res) => {
       getuserDevisioninfo(ouid),
       getuserMatctLog(ouid, currentIndex),
     ]);
-    
+
     const matchDetails = await Promise.all(matchIds.map(getuserMatchDetail));
 
     const result = {
@@ -36,7 +36,6 @@ router.post("/getuserinfo", async (req, res) => {
     res.status(400).json({ message });
   }
 });
-
 const getOuid = async (nickname) => {
   const response = await axios.get(
     Baseinfo.BaseApiUrl.baseURL + "/fconline/v1/id?nickname=" + nickname,
