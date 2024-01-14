@@ -107,5 +107,15 @@ const getCurrentIndex = async (nickname) => {
   );
   return response.data.find((data) => data.matchId === matchId);
 };
-
+router.get("/getuserinfos", async (req, res) => {
+  try {
+    const { value } = req.query;
+    res.setHeader("Content-Type", "text/html");
+    res.status(200).send(`<h1>querystring value: ${value}</h1>`);
+  } catch (error) {
+    console.error("에러:", error);
+    const message = `[ERROR] POST /getuserinfo ${error.message}`;
+    res.status(400).json({ message });
+  }
+});
 module.exports = router;
